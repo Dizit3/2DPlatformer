@@ -54,16 +54,14 @@ public class Hero : MonoBehaviour
     private void Jump()
     {
         rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-
-
     }
 
 
     private void OnCollisionStay2D(Collision2D collision)
     {
          isGrounded = true;
-
     }
+
 
 
     private void OnCollisionExit2D(Collision2D collision)
