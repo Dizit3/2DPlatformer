@@ -7,14 +7,7 @@ public class Obstacle : MonoBehaviour
     {
         if (collision.gameObject == Hero.Instance.gameObject)
         {
-            Hero.Instance.GetDamage();
-
-            if (Hero.Instance.lives <= 0)
-            {
-                Hero.Instance.Die();
-            }
+            Hero.onTouch.Invoke();
         }
     }
-
-    
 }

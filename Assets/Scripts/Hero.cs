@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-public sealed class Hero  :MonoBehaviour , IEntity
+public sealed class Hero : Entity
 {
     [SerializeField] private float speed = 5f;
     [SerializeField] private float jumpForce = 5f;
@@ -10,8 +11,10 @@ public sealed class Hero  :MonoBehaviour , IEntity
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
     private Animator anim;
+
     public static Hero Instance { get; set; }
 
+    public static Action onTouch;
 
     private Hero() { }
 
@@ -48,14 +51,6 @@ public sealed class Hero  :MonoBehaviour , IEntity
         set { anim.SetInteger("state", (int)value); }
     }
 
-    public void GetDamage()
-    {
-        lives--;
-        Debug.Log(lives);
-    }
-
-
-
     private void Run()
     {
         if (isGrounded) State = States.run;
@@ -72,15 +67,24 @@ public sealed class Hero  :MonoBehaviour , IEntity
         rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
     }
 
-    public void Die()
+
+    public override void GetDamage()
     {
-        Destroy(this.gameObject); 
+        lives--;
+
+        Debug.Log(lives);
+
+        if (lives <= 0)
+        {
+            Die();
+        }
     }
 
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-         isGrounded = true;
+        isGrounded = true;
+
     }
 
 

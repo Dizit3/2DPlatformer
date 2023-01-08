@@ -1,11 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public interface IEntity 
+public abstract class Entity : MonoBehaviour, IEntity
 {
-    public void GetDamage();
 
-    public void Die();
+    public abstract void GetDamage();
 
+    public virtual void Die()
+    {
+        Destroy(this.gameObject);
+    }
 }
+
