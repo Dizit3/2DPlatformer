@@ -1,15 +1,46 @@
 using UnityEngine;
 
-public class Hero : MonoBehaviour
+public sealed class Hero  :MonoBehaviour , IEntity
 {
     [SerializeField] private float speed = 5f;
     [SerializeField] private float jumpForce = 5f;
-    [SerializeField] private int lives = 5;
+    internal int lives = 5;
     private bool isGrounded = false;
 
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
     private Animator anim;
+    public static Hero Instance { get; set; }
+
+
+    private Hero() { }
+
+    private void Awake()
+    {
+        Instance = this;
+        rb = GetComponent<Rigidbody2D>();
+        sprite = GetComponentInChildren<SpriteRenderer>();
+        anim = GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+
+        if (isGrounded) State = States.idle;
+        else State = States.jump;
+
+        if (Instance != null)
+        {
+            if (Input.GetButton("Horizontal"))
+                Run();
+
+            if (Input.GetButtonDown("Jump") && isGrounded)
+                Jump();
+
+        }
+    }
+
+
 
     private States State
     {
@@ -17,12 +48,12 @@ public class Hero : MonoBehaviour
         set { anim.SetInteger("state", (int)value); }
     }
 
-    private void Awake()
+    public void GetDamage()
     {
-        rb = GetComponent<Rigidbody2D>();
-        sprite = GetComponentInChildren<SpriteRenderer>();
-        anim = GetComponent<Animator>();
+        lives--;
+        Debug.Log(lives);
     }
+
 
 
     private void Run()
@@ -36,24 +67,14 @@ public class Hero : MonoBehaviour
         sprite.flipX = dir.x < 0.0f;
     }
 
-
-    private void Update()
-    {
-
-        if (isGrounded) State = States.idle;
-        else State = States.jump;
-
-
-        if (Input.GetButton("Horizontal"))
-            Run();
-
-        if (Input.GetButtonDown("Jump") && isGrounded)
-            Jump();
-    }
-
     private void Jump()
     {
         rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+    }
+
+    public void Die()
+    {
+        Destroy(this.gameObject); 
     }
 
 

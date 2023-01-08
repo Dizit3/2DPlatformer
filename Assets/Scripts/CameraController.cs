@@ -10,9 +10,13 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        if (objTransform != null)
+        {
         Vector3 newCamPos = new Vector3(objTransform.position.x, objTransform.position.y, offset.z);
 
         transform.position = Vector3.Lerp(transform.position, newCamPos, camSpeed * Time.deltaTime);
+
+        }
 
     }
 
