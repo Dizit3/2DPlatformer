@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public sealed class Hero : Entity
@@ -16,11 +17,20 @@ public sealed class Hero : Entity
 
     public static Action onTouch;
 
+    public List<Equipment> Inventory = new List<Equipment>();
+    public Equipment equipmentInMainHand = new Sword();
+    private bool isMainHandEmpty = true;
+
     private Hero() { }
 
     private void Awake()
     {
         Instance = this;
+        //Instance.Inventory.Add(new Sword());
+
+        //Instance.equipmentInMainHand = new Sword();
+
+
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         anim = GetComponent<Animator>();
@@ -41,6 +51,8 @@ public sealed class Hero : Entity
                 Jump();
 
         }
+
+        if (Input.GetMouseButtonDown(0)) MainEquipmentAction();
     }
 
 
@@ -93,6 +105,14 @@ public sealed class Hero : Entity
     {
         isGrounded = false;
     }
+
+
+
+    public void MainEquipmentAction()
+    {
+        if (!isMainHandEmpty) equipmentInMainHand?.onAttackButtonDown?.Invoke();
+    }
+
 }
 
 
