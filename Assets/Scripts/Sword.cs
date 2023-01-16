@@ -1,5 +1,10 @@
-﻿public class Sword : Weapon
+﻿using System.Diagnostics;
+using UnityEngine;
+
+public class Sword : Weapon
 {
+
+
     public string Name { get; set; }
     public  int Damage { get; set; }
     public  float Range { get; set; }
@@ -10,9 +15,9 @@
         //Set parent ?
     }
 
-    public override void Attack()
+    public static void Attack()
     {
-
+        UnityEngine.Debug.Log("ATTACK!!!");
         //Do some thing
     }
 }
