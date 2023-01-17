@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngineInternal;
 
 public class MovingEnemy : Entity
 {
@@ -33,20 +32,15 @@ public class MovingEnemy : Entity
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject == Hero.Instance.gameObject)
-        {
-            Hero.onTouch.Invoke();
-            GetDamage();
-        }
         if (collision.gameObject.tag == "Platform")
         {
 
             var hit = Physics2D.Raycast(new Vector2(triangle.position.x, triangle.position.y), Vector2.right, rayDist);
 
-            if(hit.collider != null)
+            if (hit.collider != null)
             {
                 Debug.Log(hit.collider.gameObject.tag);
-                Debug.DrawRay(new Vector2(triangle.position.x, triangle.position.y), new Vector3(rayDist,0), Color.black, 5f);
+                Debug.DrawRay(new Vector2(triangle.position.x, triangle.position.y), new Vector3(rayDist, 0), Color.black, 5f);
 
                 if (direction == Vector3.right)
                 {
@@ -56,8 +50,14 @@ public class MovingEnemy : Entity
                 {
                     direction = Vector3.right;
                 }
+                return;
             }
-            
+
+            if (collision.gameObject == Hero.Instance?.gameObject)
+            {
+                Hero.onTouch.Invoke();
+                GetDamage();
+            }
 
         }
 

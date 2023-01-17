@@ -3,7 +3,12 @@
 public abstract class Weapon : Equipment
 {
 
-    public abstract void Equip();
+
+    public override void Use()
+    {
+        Attack();
+    }
+    public abstract void Attack();
 
 
 }

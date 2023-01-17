@@ -21,16 +21,10 @@ public class Sword : Weapon
 
     //    return Instance;
     //}
-
-
-    public override void Equip()
-    {
-        //Set parent ?
-    }
-
-    public override void Use()
+    
+    public override void Attack()
     {
         UnityEngine.Debug.Log("ATTACK!!!");
         //Do some thing
     }
-}
+}    

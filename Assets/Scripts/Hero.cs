@@ -32,6 +32,7 @@ public sealed class Hero : Entity
         //Instance.Inventory.Enqueue(new Sword("ShortSword", 5, .5f, .5f));
 
         Instance.Inventory.Add(new Sword("ShortSword", 5, .5f, .5f));
+       
 
         //Instance.equipmentInMainHand = new Sword("ShortSword", 5, .5f, .5f);
 
@@ -142,6 +143,14 @@ public sealed class Hero : Entity
         }
     }
 
+
+    public override void Die()
+    {
+
+        Destroy(this.gameObject);
+
+        Instance = null;
+    }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
