@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public sealed class Hero : Entity
@@ -18,7 +19,8 @@ public sealed class Hero : Entity
     public static Action onTouch;
 
     public List<Equipment> Inventory = new List<Equipment>();
-    public Equipment equipmentInMainHand = new Sword();
+    public int scrollCount = 0;
+    public Equipment equipmentInMainHand;
     private bool isMainHandEmpty = true;
 
     private Hero() { }
@@ -26,9 +28,12 @@ public sealed class Hero : Entity
     private void Awake()
     {
         Instance = this;
-        //Instance.Inventory.Add(new Sword());
+        //Instance.Inventory.Enqueue(null);
+        //Instance.Inventory.Enqueue(new Sword("ShortSword", 5, .5f, .5f));
 
-        //Instance.equipmentInMainHand = new Sword();
+        Instance.Inventory.Add(new Sword("ShortSword", 5, .5f, .5f));
+
+        //Instance.equipmentInMainHand = new Sword("ShortSword", 5, .5f, .5f);
 
 
         rb = GetComponent<Rigidbody2D>();
@@ -53,6 +58,51 @@ public sealed class Hero : Entity
         }
 
         if (Input.GetMouseButtonDown(0)) MainEquipmentAction();
+
+        if (Input.mouseScrollDelta.y > 0)
+        {
+            if (Inventory.Count > scrollCount && scrollCount >= 0)
+            {
+                if (Inventory.ElementAt(scrollCount) != null)
+                {
+                    equipmentInMainHand = Inventory.ElementAt(scrollCount);
+                    isMainHandEmpty = false;
+                    Debug.Log(equipmentInMainHand.Name);
+                    scrollCount++;
+                }
+
+            }
+            else
+            {
+                isMainHandEmpty = true;
+                equipmentInMainHand = null;
+                scrollCount = 0;
+                Debug.Log("Main hand empty!!");
+            }
+
+
+        }
+        else if (Input.mouseScrollDelta.y < 0)
+        {
+            if (Inventory.Count > scrollCount && scrollCount >= 0)
+            {
+                if (Inventory.ElementAt(scrollCount) != null)
+                {
+                    equipmentInMainHand = Inventory.ElementAt(scrollCount);
+                    isMainHandEmpty = false;
+                    Debug.Log(equipmentInMainHand.Name);
+                    scrollCount--;
+                }
+
+            }
+            else
+            {
+                isMainHandEmpty = true;
+                equipmentInMainHand = null;
+                scrollCount = 0;
+                Debug.Log("Main hand empty!!");
+            }
+        }
     }
 
 
@@ -110,7 +160,7 @@ public sealed class Hero : Entity
 
     public void MainEquipmentAction()
     {
-        if (!isMainHandEmpty) equipmentInMainHand?.onAttackButtonDown?.Invoke();
+        if (!isMainHandEmpty) equipmentInMainHand.Use();
     }
 
 }

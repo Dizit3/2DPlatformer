@@ -1,10 +1,11 @@
-﻿using System;
-using UnityEngine;
-
-
-public abstract class Equipment : MonoBehaviour
+﻿public abstract class Equipment
 {
-    public Action onAttackButtonDown;
+    public string Name;
+    public int Damage;
+    public float Range;
+    public float Speed;
+    public abstract void Use();
+
 
 }
 

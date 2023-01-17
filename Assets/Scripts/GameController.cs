@@ -7,7 +7,7 @@ public class GameController : MonoBehaviour
     {
         Hero.onTouch += Hero.Instance.GetDamage;
 
-        Equipment.onAttackButtonDown += Sword.Attack;
+        //Equipment.onAttackButtonDown += Sword.Attack;
 
     }
 

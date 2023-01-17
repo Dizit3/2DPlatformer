@@ -4,18 +4,31 @@ using UnityEngine;
 public class Sword : Weapon
 {
 
+    public Sword(string name, int damage, float range, float speed)
+    {
+        Name = name;
+        Damage = damage;
+        Range = range;
+        Speed = speed;
+    }
 
-    public string Name { get; set; }
-    public  int Damage { get; set; }
-    public  float Range { get; set; }
-    public  float Speed { get; set; }
+    //public static Sword Instance;
+
+    //public Sword GetSword(string name, int damage, float range, float speed)
+    //{
+    //    if (Instance == null) 
+    //    return new Sword(name, damage, range, speed);
+
+    //    return Instance;
+    //}
+
 
     public override void Equip()
     {
         //Set parent ?
     }
 
-    public static void Attack()
+    public override void Use()
     {
         UnityEngine.Debug.Log("ATTACK!!!");
         //Do some thing
