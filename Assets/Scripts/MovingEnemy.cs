@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MovingEnemy : Entity
+public class MovingEnemy : Entities
 {
     private int lives = 3;
 

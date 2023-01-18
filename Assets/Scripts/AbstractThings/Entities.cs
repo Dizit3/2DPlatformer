@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class Entity : MonoBehaviour, IEntity
+public abstract class Entities : MonoBehaviour, IEntity
 {
 
     public abstract void GetDamage();

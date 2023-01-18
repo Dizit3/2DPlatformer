@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public sealed class Hero : Entity
+public sealed class Hero : Entities
 {
     [SerializeField] private float speed = 5f;
     [SerializeField] private float jumpForce = 5f;
@@ -14,28 +12,28 @@ public sealed class Hero : Entity
     private SpriteRenderer sprite;
     private Animator anim;
 
+    public enum States
+    {
+        idle,
+        run,
+        jump
+    }
+
     public static Hero Instance { get; set; }
 
     public static Action onTouch;
 
-    public List<Equipment> Inventory = new List<Equipment>();
-    public int scrollCount = 0;
+    public Inventory inventory;
     public Equipment equipmentInMainHand;
-    private bool isMainHandEmpty = true;
 
     private Hero() { }
 
     private void Awake()
     {
         Instance = this;
-        //Instance.Inventory.Enqueue(null);
-        //Instance.Inventory.Enqueue(new Sword("ShortSword", 5, .5f, .5f));
 
-        Instance.Inventory.Add(new Sword("ShortSword", 5, .5f, .5f));
-       
-
-        //Instance.equipmentInMainHand = new Sword("ShortSword", 5, .5f, .5f);
-
+        inventory = new Inventory();
+        inventory.Add(new Sword("ShortSword", 5, .5f, .5f));
 
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
@@ -58,55 +56,21 @@ public sealed class Hero : Entity
 
         }
 
-        if (Input.GetMouseButtonDown(0)) MainEquipmentAction();
+        if (Input.GetMouseButtonDown(0))
+            if (inventory.mainHand != null) inventory.mainHand.Use();
+            else Debug.Log("MainHandIsEmpty!");
 
         if (Input.mouseScrollDelta.y > 0)
         {
-            if (Inventory.Count > scrollCount && scrollCount >= 0)
-            {
-                if (Inventory.ElementAt(scrollCount) != null)
-                {
-                    equipmentInMainHand = Inventory.ElementAt(scrollCount);
-                    isMainHandEmpty = false;
-                    Debug.Log(equipmentInMainHand.Name);
-                    scrollCount++;
-                }
-
-            }
-            else
-            {
-                isMainHandEmpty = true;
-                equipmentInMainHand = null;
-                scrollCount = 0;
-                Debug.Log("Main hand empty!!");
-            }
-
-
+            inventory.Scroll(1);
+            equipmentInMainHand = inventory.mainHand;
         }
         else if (Input.mouseScrollDelta.y < 0)
         {
-            if (Inventory.Count > scrollCount && scrollCount >= 0)
-            {
-                if (Inventory.ElementAt(scrollCount) != null)
-                {
-                    equipmentInMainHand = Inventory.ElementAt(scrollCount);
-                    isMainHandEmpty = false;
-                    Debug.Log(equipmentInMainHand.Name);
-                    scrollCount--;
-                }
-
-            }
-            else
-            {
-                isMainHandEmpty = true;
-                equipmentInMainHand = null;
-                scrollCount = 0;
-                Debug.Log("Main hand empty!!");
-            }
+            inventory.Scroll(-1);
+            equipmentInMainHand = inventory.mainHand;
         }
     }
-
-
 
     private States State
     {
@@ -118,7 +82,6 @@ public sealed class Hero : Entity
     {
         if (isGrounded) State = States.run;
 
-
         Vector3 dir = transform.right * Input.GetAxis("Horizontal");
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
 
@@ -129,7 +92,6 @@ public sealed class Hero : Entity
     {
         rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
     }
-
 
     public override void GetDamage()
     {
@@ -143,7 +105,6 @@ public sealed class Hero : Entity
         }
     }
 
-
     public override void Die()
     {
 
@@ -155,29 +116,10 @@ public sealed class Hero : Entity
     private void OnCollisionStay2D(Collision2D collision)
     {
         isGrounded = true;
-
     }
-
-
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         isGrounded = false;
     }
-
-
-
-    public void MainEquipmentAction()
-    {
-        if (!isMainHandEmpty) equipmentInMainHand.Use();
-    }
-
-}
-
-
-public enum States
-{
-    idle,
-    run,
-    jump
 }
