@@ -57,7 +57,7 @@ public sealed class Hero : Entities
         }
 
         if (Input.GetMouseButtonDown(0))
-            if (inventory.mainHand != null) inventory.mainHand.Use();
+            if (inventory?.mainHand != null) inventory.mainHand.Use();
             else Debug.Log("MainHandIsEmpty!");
 
         if (Input.mouseScrollDelta.y > 0)
