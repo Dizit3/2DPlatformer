@@ -5,7 +5,7 @@ public sealed class Hero : Entities
 {
     [SerializeField] private float speed = 5f;
     [SerializeField] private float jumpForce = 5f;
-    internal int lives = 5;
+    [SerializeField] private int lives = 5;
     private bool isGrounded = false;
 
     private Rigidbody2D rb;
