@@ -16,7 +16,8 @@ public sealed class Hero : Entities
     {
         idle,
         run,
-        jump
+        jump,
+        fall
     }
 
     public static Hero Instance { get; set; }
