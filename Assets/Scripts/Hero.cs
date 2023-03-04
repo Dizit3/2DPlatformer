@@ -76,7 +76,7 @@ public sealed class Hero : Entities
     private States State
     {
         get { return (States)anim.GetInteger("state"); }
-        set { anim.SetInteger("state", (int)value); }
+        set { anim.SetInteger("States", (int)value); }
     }
 
     private void Run()
