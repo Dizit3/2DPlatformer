@@ -3,6 +3,8 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
 
+    private bool isPause = false;
+
     private void Start()
     {
         Hero.onTouch += Hero.Instance.GetDamage;
@@ -10,6 +12,25 @@ public class GameController : MonoBehaviour
         //Equipment.onAttackButtonDown += Sword.Attack;
 
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!isPause) {
+                Time.timeScale = 0f;
+                isPause = true;
+                return;
+            }
+            if (isPause){
+                Time.timeScale = 1.0f;
+                isPause = false;
+                return;
+            }
+
+        }
+    }
+
 
     private void OnDisable()
     {
